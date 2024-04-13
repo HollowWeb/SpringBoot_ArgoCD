@@ -86,7 +86,7 @@ jobs:
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run ./src/test/system/api_main_quest_test.json
+          newman run .src/test/system/MainQuest.postman_collection.json
         working-directory: ${{github.workspace}}
         
           
