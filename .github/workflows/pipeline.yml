@@ -21,7 +21,7 @@ jobs:
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run src/test/system/MainQuest.postman_collection.json
+          newman run src/test/system/*
 
       - name: Set up JDK
         uses: actions/setup-java@v1
