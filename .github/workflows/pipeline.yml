@@ -82,8 +82,12 @@ jobs:
           # Example:
           # argocd app wait <APP_NAME> --timeout 300
 
+      - name: List contents of the system tests directory
+        run: ls -la ./src/test/java/com/example/gitops/system/
+        working-directory: ${{github.workspace}}
+
+
       - name: Run system tests
-        uses: actions/checkout@v4
         run: |
           npm install -g newman
           newman run ./src/test/java/com/example/gitops/system/api_main_quest_test.json
