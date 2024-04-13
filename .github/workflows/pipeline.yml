@@ -90,7 +90,7 @@ jobs:
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run ./src/test/java/com/example/gitops/system/api_main_quest_test.json
+          newman run test --tests '*.*System*'
         working-directory: ${{github.workspace}}
         
           
