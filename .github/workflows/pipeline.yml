@@ -86,6 +86,7 @@ jobs:
         run: |
           npm install -g newman
           newman run ./test/system/api_main_quest_test.json
+        working-directory: ${{github.workspace}}
           
 
   deploy-to-production:
