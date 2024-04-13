@@ -14,10 +14,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List contents of the system directory
+        run: ls -la ./system/
+        working-directory: ${{github.workspace}}
+
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run ./test/system/
+          newman run ./system/
 
       - name: Set up JDK
         uses: actions/setup-java@v1
