@@ -17,7 +17,7 @@ jobs:
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run test/system/
+          newman run ./test/system/
 
       - name: Set up JDK
         uses: actions/setup-java@v1
