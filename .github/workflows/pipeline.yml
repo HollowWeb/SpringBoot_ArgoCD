@@ -84,7 +84,7 @@ jobs:
 
       - name: Run system tests
         run: |
-          newman run ./test/system/api_main_quest_test.json
+          newman run ./test/system/*.json
         working-directory: ${{github.workspace}}
         
           
