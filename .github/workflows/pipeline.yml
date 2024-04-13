@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: List contents of the system directory
-        run: ls -la ./system/
+        run: ls -la src/test/system/MainQuest.postman_collection.json
         working-directory: ${{github.workspace}}
 
       - name: Run system tests
