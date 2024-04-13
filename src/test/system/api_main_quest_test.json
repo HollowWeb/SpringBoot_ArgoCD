@@ -1,0 +1,19 @@
+{
+	"info": {
+		"_postman_id": "31fe77e3-ed14-462c-b672-6252feed9637",
+		"name": "MainQuest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34259476"
+	},
+	"item": [
+		{
+			"name": "CheckAPI_Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "https://www.boredapi.com/api/activity"
+			},
+			"response": []
+		}
+	]
+}

@@ -84,10 +84,9 @@ jobs:
 
       - name: Run system tests
         run: |
-          # Add the execution of further tests here 
-          # You may use Newman for system testing
-          # Example:
-          # newman run collection.json -e environment.json
+          npm install -g newman
+          newman run src/test/system/api_main_quest_test.json
+          
 
   deploy-to-production:
     runs-on: ubuntu-latest
@@ -111,4 +110,4 @@ jobs:
           git config --global user.name "github-actions"
           git add values_production.yml
           git commit --allow-empty -m "Deploy $version to production"
-          git push
+          gh pr create --base main --head release --assignee "@me" --reviewer HollowWeb -t "Request to deploy ${{ env.PROJECT_VERSION }} to Production"
