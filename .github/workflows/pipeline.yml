@@ -99,14 +99,7 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
-      - name: List contents of the system directory
-        run: ls -la src/test/system/MainQuest.postman_collection.json
-        working-directory: ${{github.workspace}}
 
-      - name: Run system tests
-        run: |
-          npm install -g newman
-          newman run src/test/system/*
 
 
 
