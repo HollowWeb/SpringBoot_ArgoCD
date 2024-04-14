@@ -92,12 +92,6 @@ jobs:
           # Example:
           # argocd app wait <APP_NAME> --timeout 300
 
-      - name: Checkout Git SpringBoot Repository for SystemTest
-        uses: action/checkout@v4
-        with:
-          repository: ${{ github.actor }}/SpringBoot_ArgoCD
-          token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-          ref: main
 
 
 
