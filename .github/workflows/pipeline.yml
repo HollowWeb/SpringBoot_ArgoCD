@@ -106,14 +106,14 @@ jobs:
 
       - name: Create new branch
         run: |
-          NEW_BRANCH="auto-pr"
+          NEW_BRANCH="update-image-tag-"
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git checkout -b $NEW_BRANCH
 
       - name: Push new branch
         run: |
-          git push origin $NEW_BRANCH
+          git push origin update-image-tag-
 
       - name: Update image tag with version from staging in production values.yml
         run: |
