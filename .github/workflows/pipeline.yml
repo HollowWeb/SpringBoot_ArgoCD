@@ -104,9 +104,16 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
-      - name: Create a new branch for production deployment
+      - name: Create new branch
         run: |
-          git checkout -b deploy/${{ env.PROJECT_VERSION }}
+          NEW_BRANCH="auto-pr"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git checkout -b $NEW_BRANCH
+
+      - name: Push new branch
+        run: |
+          git push origin $NEW_BRANCH
 
       - name: Update image tag with version from staging in production values.yml
         run: |
@@ -125,7 +132,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-          branch: update-image-tag-
+          branch: ${{ env.NEW_BRANCH }}
           title: "Test"
           body: "Test"
           base: 'main'
