@@ -36,6 +36,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List contents of the system directory
+        run: ls -la src/test/system/MainQuest.postman_collection.json
+        working-directory: ${{github.workspace}}
+
+      - name: Run system tests
+        run: |
+          npm install -g newman
+          newman run src/test/system/*
+
+
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -82,11 +92,7 @@ jobs:
           # Example:
           # argocd app wait <APP_NAME> --timeout 300
 
-      - name: Run system tests
-        run: |
-          npm install -g newman
-          newman run src/test/system/MainQuest.postman_collection.json
-        working-directory: ${{github.workspace}}
+      
 
   deploy-to-production:
     runs-on: ubuntu-latest
