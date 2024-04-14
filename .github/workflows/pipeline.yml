@@ -104,15 +104,12 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
-      - name: Create new branch
+      - name: Push new branch
         run: |
-          NEW_BRANCH="update-image-tag-"
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git checkout -b $NEW_BRANCH
-
-      - name: Push new branch
-        run: |
+          git pull origin update-image-tag-
           git push origin update-image-tag-
 
       - name: Update image tag with version from staging in production values.yml
