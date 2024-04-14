@@ -101,7 +101,7 @@ jobs:
 
       - name: Create a new branch for production deployment
         run: |
-          git checkout -b deploy/${{ env.PROJECT_VERSION }}
+          git checkout -b deploy${{ env.PROJECT_VERSION }}
 
       - name: Update image tag with version from staging in production values.yml
         run: |
