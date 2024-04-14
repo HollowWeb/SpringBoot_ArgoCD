@@ -111,7 +111,6 @@ jobs:
           git config --global user.name "GitHub Action"
           git checkout -b $NEW_BRANCH
           git config pull.rebase true
-          git pull origin update-image-tag-
           git rebase --skip
           git push origin update-image-tag-
 
