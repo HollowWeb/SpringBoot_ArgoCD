@@ -112,7 +112,7 @@ jobs:
           git checkout -b $NEW_BRANCH
           git config pull.rebase true
           
-          git push origin update-image-tag-
+          git push origin update-image-tag- -f
 
       - name: Update image tag with version from staging in production values.yml
         run: |
