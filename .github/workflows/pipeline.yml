@@ -85,13 +85,7 @@ jobs:
       - name: Run system tests
         run: |
           npm install -g newman
-          newman run src/test/system/*
-
-
-      # This Comment
-        
-        
-          
+          newman run src/test/system/MainQuest.postman_collection.json
 
   deploy-to-production:
     runs-on: ubuntu-latest
