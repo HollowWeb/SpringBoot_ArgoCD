@@ -93,10 +93,6 @@ jobs:
           # argocd app wait <APP_NAME> --timeout 300
 
 
-
-
-
-
   deploy-to-production:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
@@ -108,25 +104,25 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
-      - name: Create a new branch for production deployment
-        run: |
-          git checkout -b deploy/${{ env.PROJECT_VERSION }}
-
       - name: Update image tag with version from staging in production values.yml
         run: |
           version=$(grep 'tag:' values_staging.yml | awk '{print $2}')
           sed -i "s/tag: .*/tag: $version/" values_production.yml
 
-      - name: Commit changes to new branch
+      - name: Commit and push changes to GitOps repository
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
+          git checkout update-image-tag-
           git add values_production.yml
-          git commit -m "Update production image tag to $version"
-          git push --set-upstream origin deploy/${{ env.PROJECT_VERSION }}
+          git commit --allow-empty -m "Deploy $version to production"
+          git push origin update-image-tag-
 
-      - name: Create a pull request from the new branch to main
-        run: |
-          gh pr create --title "Deploying version ${{ env.PROJECT_VERSION }}" --body "This PR updates the production image tag to $version." --base main --head deploy/${{ env.PROJECT_VERSION }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+      - name: Create pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          branch: update-image-tag-
+          title: "Test"
+          body: "Test"
+          base: 'main'
