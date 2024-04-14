@@ -36,6 +36,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: List contents of the system directory
+        run: ls -la src/test/system/MainQuest.postman_collection.json
+        working-directory: ${{github.workspace}}
+
+      - name: Run system tests
+        run: |
+          npm install -g newman
+          newman run src/test/system/*
+
+
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -82,16 +92,6 @@ jobs:
           # Example:
           # argocd app wait <APP_NAME> --timeout 300
 
-      - name: Run system tests
-        run: |
-          npm install -g newman
-          newman run src/test/system/MainQuest.postman_collection.json
-
-
-      
-        
-        
-          
 
   deploy-to-production:
     runs-on: ubuntu-latest
@@ -113,6 +113,16 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
+          git checkout update-image-tag-
           git add values_production.yml
           git commit --allow-empty -m "Deploy $version to production"
-          gh pr create --base main --head release --assignee "@me" --reviewer HollowWeb -t "Request to deploy ${{ env.PROJECT_VERSION }} to Production"
+          git push origin update-image-tag-
+
+      - name: Create pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+          branch: update-image-tag-
+          title: "Test"
+          body: "Test"
+          base: 'main'
