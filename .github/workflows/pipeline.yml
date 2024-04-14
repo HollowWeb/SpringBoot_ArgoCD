@@ -104,21 +104,27 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
+      - name: Create a new branch for the changes
+        run: |
+          git checkout -b update-production-${{ env.PROJECT_VERSION }}
+          
+
       - name: Update image tag with version from staging in production values.yml
         run: |
           version=$(grep 'tag:' values_staging.yml | awk '{print $2}')
           sed -i "s/tag: .*/tag: $version/" values_production.yml
 
-      - name: Commit and push changes to GitOps repository
+      - name: Commit changes to new branch
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install gh
-          GH_TOKEN: ${{ github.token }}
           git add values_production.yml
-          git commit --allow-empty -m "Deploy $version to production"
-          gh pr create --base main --head main --title "Pull Request" --body "This That" --reviewer HollowWeb
+          git commit -m "Update production image tag to $version"
+          git push --set-upstream origin update-production-${{ env.PROJECT_VERSION }}
+
+      - name: Create pull request
+        run: |
+          gh pr create --title "Deploy version $version to production" --body "Updating production image tag to $version" --base main --head update-production-${{ env.PROJECT_VERSION }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
+
