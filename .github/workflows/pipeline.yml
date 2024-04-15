@@ -71,9 +71,15 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git add values_staging.yml
-          git commit --allow-empty -m "Deploy ${{ env.PROJECT_VERSION }} to staging"
-          git push
+          git add values_production.yml
+          git status
+          git commit --allow-empty -m "Update production image tag to $version"
+          git status
+          gh pr create --base main --head main --assignee "@me" --reviewer HollowWeb -t "Automated Pull Request to Release stage" -b "Pull Request to Production. This is to be Reviewed by HollowWeb bevor pushing"
+
+        env:
+          GH_TOKEN: ${{secrets.REPOSITORY_ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.REPOSITORY_ACCESS_TOKEN}}
 
       - name: Wait for ArgoCD deployment
         run: |
@@ -112,16 +118,11 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git checkout update-image-tag-
           git add values_production.yml
-          git commit --allow-empty -m "Deploy $version to production"
-          git push origin update-image-tag-
-
-      - name: Create pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-          branch: update-image-tag-
-          title: "Test"
-          body: "Test"
-          base: 'main'
+          git status
+          git commit --allow-empty -m "Update production image tag to $version"
+          git status
+          gh pr create --base main --head main --assignee "@me" --reviewer HollowWeb -t "Automated Pull Request to Production" -b "Pull Request to Production. This is to be Reviewed by HollowWeb bevor pushing"
+        env:
+          GH_TOKEN: ${{secrets.REPOSITORY_ACCESS_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.REPOSITORY_ACCESS_TOKEN}}
