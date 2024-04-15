@@ -102,16 +102,6 @@ jobs:
           token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
           ref: main
 
-      - name: Push new branch
-        run: |
-          NEW_BRANCH="update-image-tag-"
-          git config --global user.email "action@github.com"
-          git config --global user.name "GitHub Action"
-          git checkout -b $NEW_BRANCH
-          git config pull.rebase true
-          git add values_production.yml
-          git push origin update-image-tag- -f
-
       - name: Update image tag with version from staging in production values.yml
         run: |
           version=$(grep 'tag:' values_staging.yml | awk '{print $2}')
@@ -123,13 +113,6 @@ jobs:
           git config --global user.name "github-actions"
           git add values_production.yml
           git commit -m "Update production image tag to $version"
-          git push --set-upstream origin deploy/${{ env.PROJECT_VERSION }}
+          gh pr create --base main --head main --assignee "@me" --reviewer HollowWeb -t "Automated Pull Request to Production" -b "Pull Request to Production. This is to be Reviewed by HollowWeb bevor pushing"
 
-      - name: Create pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
-          branch: ${{ env.NEW_BRANCH }}
-          title: "Test"
-          body: "Test"
-          base: 'main'
+
