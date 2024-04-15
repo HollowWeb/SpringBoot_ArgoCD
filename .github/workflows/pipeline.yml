@@ -67,9 +67,9 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git config --global pull.ff only
           git checkout -b staging
           git rebase staging
+          git pull origin staging
 
       - name: Update image tag in values.yml
         run: |
