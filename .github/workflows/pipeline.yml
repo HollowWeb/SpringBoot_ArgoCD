@@ -71,9 +71,9 @@ jobs:
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
-          git add values_production.yml
+          git add values_staging.yml
           git status
-          git commit --allow-empty -m "Update production image tag to $version"
+          git commit -m "Update production image tag to $version"
           git status
           gh pr create --base main --head main --assignee "@me" --reviewer HollowWeb -t "Automated Pull Request to Production" -b "Pull Request to Production. This is to be Reviewed by HollowWeb bevor pushing"
         env:
