@@ -125,6 +125,8 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
           git checkout -b staging
+          git fetch origin
+          git merge origin/staging --allow-unrelated-histories
 
       - name: Update image tag with version from staging in production values.yml
         run: |
