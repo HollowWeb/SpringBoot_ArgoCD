@@ -132,7 +132,7 @@ jobs:
       - name: Create new branch for changes
         run: |
           git add values_production.yml
-          git commit -m "Update production image tag"
+          git commit --allow-empty -m "Update production image tag"
           git push origin staging
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
