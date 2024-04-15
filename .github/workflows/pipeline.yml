@@ -69,13 +69,13 @@ jobs:
           git config --global user.name "github-actions"
           git checkout -b staging
           git rebase staging
-          git pull origin staging
+          git pull origin staging --ff-only
 
       - name: Update image tag in values.yml
         run: |
           sed -i "s/tag: .*/tag: ${{ env.PROJECT_VERSION }}/" values_staging.yml
 
-      - name: Create new branch for changes
+      - name: Push changes to Staging Branch
         run: |
           git add values_staging.yml
           git commit -m "Update production image tag"
@@ -83,7 +83,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_ACCESS_TOKEN }}
 
-      - name: Commit changes to new branch
+      - name: Create Pull Request to merge Staging to Main Branch
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
@@ -142,7 +142,7 @@ jobs:
       - name: Check current branch
         run: git branch --show-current
 
-      - name: Commit changes to new branch
+      - name: Create Pull Request to merge Staging to Main Branch
         run: |
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
