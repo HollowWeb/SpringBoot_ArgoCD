@@ -107,6 +107,9 @@ jobs:
           version=$(grep 'tag:' values_staging.yml | awk '{print $2}')
           sed -i "s/tag: .*/tag: $version/" values_production.yml
 
+      - name: Check current branch
+        run: git branch --show-current
+
       - name: Commit changes to new branch
         run: |
           git config --global user.email "github-actions@github.com"
