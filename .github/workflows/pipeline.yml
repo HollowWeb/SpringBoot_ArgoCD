@@ -68,6 +68,7 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git config --global user.name "github-actions"
           git checkout -b staging
+          git fetch origin
           git merge origin/staging
 
       - name: Update image tag in values.yml
