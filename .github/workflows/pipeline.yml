@@ -36,16 +36,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List contents of the system directory
-        run: ls -la src/test/system/MainQuest.postman_collection.json
-        working-directory: ${{github.workspace}}
-
-      - name: Run system tests
-        run: |
-          npm install -g newman
-          newman run src/test/system/*
-
-
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -92,6 +82,14 @@ jobs:
           # Example:
           # argocd app wait <APP_NAME> --timeout 300
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run system tests
+        run: |
+          npm install -g newman
+          newman run src/test/system/*
+
 
   deploy-to-production:
     runs-on: ubuntu-latest
@@ -111,7 +109,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git checkout -b $NEW_BRANCH
           git config pull.rebase true
-          
+          git add values_production.yml
           git push origin update-image-tag- -f
 
       - name: Update image tag with version from staging in production values.yml
